@@ -1,5 +1,5 @@
 import React from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Text } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Text, BarChart, Bar } from 'recharts';
 
 class SpotifyDash extends React.Component {
     constructor(props) {
@@ -136,7 +136,51 @@ class SpotifyDash extends React.Component {
                     ad: 3492854683,
                     premium: 5232569354
                 }
-            ]
+            ],
+            barArray: [
+                {
+                  "name": "Page A",
+                  "uv": 4000,
+                  "pv": 2400,
+                  "amt": 2400
+                },
+                {
+                  "name": "Page B",
+                  "uv": 3000,
+                  "pv": 1398,
+                  "amt": 2210
+                },
+                {
+                  "name": "Page C",
+                  "uv": 2000,
+                  "pv": 9800,
+                  "amt": 2290
+                },
+                {
+                  "name": "Page D",
+                  "uv": 2780,
+                  "pv": 3908,
+                  "amt": 2000
+                },
+                {
+                  "name": "Page E",
+                  "uv": 1890,
+                  "pv": 4800,
+                  "amt": 2181
+                },
+                {
+                  "name": "Page F",
+                  "uv": 2390,
+                  "pv": 3800,
+                  "amt": 2500
+                },
+                {
+                  "name": "Page G",
+                  "uv": 3490,
+                  "pv": 4300,
+                  "amt": 2100
+                }
+              ]
         }
 
         this.handleClick = this.handleClick.bind(this);
@@ -226,7 +270,7 @@ class SpotifyDash extends React.Component {
         // ))
 
         return (
-            <React.Fragment>
+            <div>
                 <div className='navbar-container'>
                     <div className='navbar-logo'>
                         <img src='https://i.ibb.co/k9W20Wc/spotify.png' style={logoStyle} alt='spotifyLogo' />
@@ -240,12 +284,9 @@ class SpotifyDash extends React.Component {
                     </div>
                 </div>
 
-                <ResponsiveContainer className='line-chart-container'width='40%' height={400} >
+                <ResponsiveContainer className='line-chart-container'width='40%' aspect={4.0/3.0}>
                     <LineChart
                         data={this.state.data}
-                        margin={{
-                            top: 100, right: 100, left: 0, bottom: 5,
-                        }}
                     >
                         <CartesianGrid strokeDasharray="1 1" />
                         <XAxis dataKey='date' />
@@ -307,7 +348,17 @@ class SpotifyDash extends React.Component {
                         </tbody>
                     </table>
                 </div>
-            </React.Fragment>
+
+                <BarChart className='bar-chart-container' width='40%' height={400} data={this.state.barArray}>
+                    <CartesianGrid strokeDasharray="1 1" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="pv" fill="#8884d8" />
+                    <Bar dataKey="uv" fill="#82ca9d" />
+                </BarChart>
+            </div>
         )
     }
 }
