@@ -3,22 +3,38 @@
   padding: 0;
   box-sizing: border-box;
   display: flex;
-  /* flex-direction: column; */
   justify-content: center;
-  /* align-items: center; */
   font-size: 12px;
   position: relative;
 }
 
-.tableDiv {
+.navbar-container {
   position: absolute;
-  bottom: -120px;
-  left: 250px;
+  left: 35px;
+  top: 30px;
+  border: 1px solid;
+}
+
+.line-chart-container {
+  position: absolute;
+  top: -37px;
+  left: 180px;
+  width: 40%;
+  margin-left: 30px;
+  border: 1px solid;
+}
+
+.left-table-container {
+  position: absolute;
+  left: 160px;
+  top: 375px;
+  width: 40%;
+  border: 1px solid;
 }
 
 table {
   table-layout: fixed;
-  width: 80%;
+  width: 100%;
 }
 
 th, td {

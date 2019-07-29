@@ -208,49 +208,43 @@ class SpotifyDash extends React.Component {
             height: '50px',
         }
 
-        const topContainerStyle = {
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            marginTop: '10px'
-        }
-
         const chartTitle = {
             marginTop: '50px',
             fontSize: '14px'
         }
 
-        const totalTableCalc = this.state.tableArray && this.state.tableArray.map((i, perc) => (
-            <tr key={i}>
-                <th className='tableHeader'>TOTAL</th>
-                <td>-</td>
-                <td>{perc}</td>
-                {/* <td>{perc}</td>
-                <td>{perc}</td>
-                <td>{perc}</td>
-                <td>{perc}</td> */}
-            </tr>
-        ))
+        // const totalTableCalc = this.state.tableArray && this.state.tableArray.map((i, perc) => (
+        //     <tr key={i}>
+        //         <th className='tableHeader'>TOTAL</th>
+        //         <td>-</td>
+        //         <td>{perc}</td>
+        //         <td>{perc}</td>
+        //         <td>{perc}</td>
+        //         <td>{perc}</td>
+        //         <td>{perc}</td>
+        //     </tr>
+        // ))
 
         return (
             <React.Fragment>
-                <div className='topContainer' style={topContainerStyle}>
-                    <div className='logoDiv'>
+                <div className='navbar-container'>
+                    <div className='navbar-logo'>
                         <img src='https://i.ibb.co/k9W20Wc/spotify.png' style={logoStyle} alt='spotifyLogo' />
                         <p><strong>Spotify Dashboard</strong></p>
                     </div>
-                    <div className='chartTitle' style={chartTitle}>
+                    <div className='navbar-links' style={chartTitle}>
                         <p>Select Metric Below:</p>
                         <p name='users' onClick={this.handleClick}>Users</p>
                         <p name='revenue' onClick={this.handleClick}>Revenue</p>
                         <p name='streams' onClick={this.handleClick}>Streams</p>
                     </div>
                 </div>
-                <ResponsiveContainer width='80%' height={400} className='spotDash'>
+
+                <ResponsiveContainer className='line-chart-container'width='40%' height={400} >
                     <LineChart
                         data={this.state.data}
                         margin={{
-                            top: 100, right: 30, left: 70, bottom: 5,
+                            top: 100, right: 100, left: 0, bottom: 5,
                         }}
                     >
                         <CartesianGrid strokeDasharray="1 1" />
@@ -265,7 +259,7 @@ class SpotifyDash extends React.Component {
                     </LineChart>
                 </ResponsiveContainer>
 
-                <div className='tableDiv'>
+                <div className='left-table-container'>
                     <table>
                         <thead>
                             <tr>
@@ -280,8 +274,17 @@ class SpotifyDash extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {totalTableCalc}
-                            {/* <tr>
+                        <tr>
+                                <th className='tableHeader'>Ad-Funded</th>
+                                <td>-</td>
+                                <td>50%</td>
+                                <td>50%</td>
+                                <td>50%</td>
+                                <td>50%</td>
+                                <td>50%</td>
+                                <td>50%</td>
+                            </tr>
+                            <tr>
                                 <th className='tableHeader'>Ad-Funded</th>
                                 <td>-</td>
                                 <td>50%</td>
@@ -300,7 +303,7 @@ class SpotifyDash extends React.Component {
                                 <td>50%</td>
                                 <td>50%</td>
                                 <td>50%</td>
-                            </tr> */}
+                            </tr>
                         </tbody>
                     </table>
                 </div>
