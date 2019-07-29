@@ -141,12 +141,15 @@ class SpotifyDash extends React.Component {
 
         this.handleClick = this.handleClick.bind(this);
         this.pushData = this.pushData.bind(this);
+        this.percentToPriorMonthCalc = this.percentToPriorMonthCalc.bind(this);
     }
 
     componentDidMount() {
         this.setState({
             data: this.state.userArray
         })
+
+        this.percentToPriorMonthCalc(this.state.userArray);
     }
 
     pushData(metric) {
@@ -183,6 +186,21 @@ class SpotifyDash extends React.Component {
         }
     }
 
+    percentToPriorMonthCalc(arr) {
+        const calcArray = [];
+
+        for (let i=1; i < arr.length; i++) {
+            let currentTotal = arr[i].total;
+            let prevTotal = arr[i-1].total;
+
+            let calc = ((currentTotal/prevTotal-1) * 100).toFixed(0) + '%';
+            calcArray.push(calc);
+        }
+        this.setState({
+            tableArray: calcArray
+        })
+    }
+
 
     render() {
         const logoStyle = {
@@ -201,6 +219,18 @@ class SpotifyDash extends React.Component {
             marginTop: '50px',
             fontSize: '14px'
         }
+
+        const totalTableCalc = this.state.tableArray && this.state.tableArray.map((i, perc) => (
+            <tr key={i}>
+                <th className='tableHeader'>TOTAL</th>
+                <td>-</td>
+                <td>{perc}</td>
+                {/* <td>{perc}</td>
+                <td>{perc}</td>
+                <td>{perc}</td>
+                <td>{perc}</td> */}
+            </tr>
+        ))
 
         return (
             <React.Fragment>
@@ -234,6 +264,46 @@ class SpotifyDash extends React.Component {
                         <Line type='natural' dataKey='premium' stroke='#008000' />
                     </LineChart>
                 </ResponsiveContainer>
+
+                <div className='tableDiv'>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>4/1/17</th>
+                                <th>5/1/17</th>
+                                <th>6/1/17</th>
+                                <th>7/1/17</th>
+                                <th>8/1/17</th>
+                                <th>9/1/17</th>
+                                <th>10/1/17</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {totalTableCalc}
+                            {/* <tr>
+                                <th className='tableHeader'>Ad-Funded</th>
+                                <td>-</td>
+                                <td>50%</td>
+                                <td>50%</td>
+                                <td>50%</td>
+                                <td>50%</td>
+                                <td>50%</td>
+                                <td>50%</td>
+                            </tr>
+                            <tr>
+                                <th className='tableHeader'>Premium</th>
+                                <td>-</td>
+                                <td>50%</td>
+                                <td>50%</td>
+                                <td>50%</td>
+                                <td>50%</td>
+                                <td>50%</td>
+                                <td>50%</td>
+                            </tr> */}
+                        </tbody>
+                    </table>
+                </div>
             </React.Fragment>
         )
     }
