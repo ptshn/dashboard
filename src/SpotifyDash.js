@@ -225,14 +225,19 @@ class SpotifyDash extends React.Component {
             height: "50px"
         };
 
-        const chartTitle = {
+        const navFilterStyle = {
             marginTop: "50px",
-            fontSize: "14px"
         };
+
+        const chartTitleStyle = {
+            fontSize: '1.5em',
+            fontWeight: 'bold',
+            textAlign: 'center'
+        }
 
         return (
             <div className='main-container'>
-            
+
                 <div className="navbar-container">
                     <div className="navbar-logo">
                         <img
@@ -242,7 +247,7 @@ class SpotifyDash extends React.Component {
                         />
                         <p><strong>Spotify Dashboard</strong></p>
                     </div>
-                    <div className="navbar-links" style={chartTitle}>
+                    <div className="navbar-links" style={navFilterStyle}>
                         <p>Select Metric Below:</p>
                         <p name="users" onClick={this.handleClick}>Users</p>
                         <p name="revenue" onClick={this.handleClick}>Revenue</p>
@@ -253,7 +258,7 @@ class SpotifyDash extends React.Component {
                 <div className="content-flex-container">
 
                     <div className="line-chart-flex">
-                        <p style={{ textAlign: "center" }}>{this.state.lineChartTitle} by Month</p>
+                        <p style={chartTitleStyle}>{this.state.lineChartTitle} by Month</p>
                         <ResponsiveContainer
                             className="line-chart-container"
                             width="99%"
@@ -272,11 +277,85 @@ class SpotifyDash extends React.Component {
                             </LineChart>
                         </ResponsiveContainer>
 
-                        <div className="left-table-container">
+                        <div className="table-container">
                             <table>
                                 <thead>
                                     <tr>
-                                        <th />
+                                        <th className="tableHeader">% to Prior Month</th>
+                                        <th>4/1/17</th>
+                                        <th>5/1/17</th>
+                                        <th>6/1/17</th>
+                                        <th>7/1/17</th>
+                                        <th>8/1/17</th>
+                                        <th>9/1/17</th>
+                                        <th>10/1/17</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th className="tableHeader">Total</th>
+                                        <td>-</td>
+                                        <td>50%</td>
+                                        <td>50%</td>
+                                        <td>50%</td>
+                                        <td>50%</td>
+                                        <td>50%</td>
+                                        <td>50%</td>
+                                    </tr>
+                                    <tr>
+                                        <th className="tableHeader">Ad-Funded</th>
+                                        <td>-</td>
+                                        <td>50%</td>
+                                        <td>50%</td>
+                                        <td>50%</td>
+                                        <td>50%</td>
+                                        <td>50%</td>
+                                        <td>50%</td>
+                                    </tr>
+                                    <tr>
+                                        <th className="tableHeader">Premium</th>
+                                        <td>-</td>
+                                        <td>50%</td>
+                                        <td>50%</td>
+                                        <td>50%</td>
+                                        <td>50%</td>
+                                        <td>50%</td>
+                                        <td>50%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div className="bar-chart-flex">
+                        <p style={chartTitleStyle}>{this.state.lineChartTitle} - Monthly Share % (Ad-Funded vs.
+                            Premium)</p>
+                        <ResponsiveContainer
+                            width="99%"
+                            height={288}
+                            aspect={2}
+                        >
+                            <BarChart
+                                width={480}
+                                height={288}
+                                data={this.state.data}
+                                className="bar-chart-container"
+                            >
+                                <XAxis dataKey="date" />
+                                <YAxis />
+                                <CartesianGrid strokeDasharray="1 1" />
+                                <Tooltip />
+                                <Legend />
+                                <Bar dataKey="ad" stackId="a" fill="#3f72af" />
+                                <Bar dataKey="premium" stackId="a" fill="#293462" />
+                            </BarChart>
+                        </ResponsiveContainer>
+
+                        <div className="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th className="tableHeader">Share %</th>
                                         <th>4/1/17</th>
                                         <th>5/1/17</th>
                                         <th>6/1/17</th>
@@ -289,63 +368,30 @@ class SpotifyDash extends React.Component {
                                 <tbody>
                                     <tr>
                                         <th className="tableHeader">Ad-Funded</th>
-                                        <td>-</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
+                                        <td>64%</td>
+                                        <td>64%</td>
+                                        <td>62%</td>
+                                        <td>61%</td>
+                                        <td>62%</td>
+                                        <td>61%</td>
+                                        <td>63%</td>
                                     </tr>
-                                    {/* <tr>
-                    <th className="tableHeader">Ad-Funded</th>
-                    <td>-</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                  </tr> */}
-                                    {/* <tr>
-                    <th className="tableHeader">Premium</th>
-                    <td>-</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                    <td>50%</td>
-                  </tr> */}
+                                    <tr>
+                                        <th className="tableHeader">Premium</th>
+                                        <td>36%</td>
+                                        <td>36%</td>
+                                        <td>38%</td>
+                                        <td>39%</td>
+                                        <td>38%</td>
+                                        <td>39%</td>
+                                        <td>37%</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    <div className="bar-chart-flex">
-                        <p style={{ textAlign: "center" }}>{this.state.lineChartTitle} - Monthly Share % (Ad-Funded vs.
-                            Premium)</p>
-                        <ResponsiveContainer
-                            width="99%"
-                            height={288}
-                            aspect={2}
-                        >
-                        <BarChart
-                            width={480}
-                            height={288}
-                            data={this.state.data}
-                            className="bar-chart-container"
-                        >
-                            <XAxis dataKey="date" />
-                            <YAxis />
-                            <CartesianGrid strokeDasharray="1 1" />
-                            <Tooltip />
-                            <Legend wrapperStyle={{ bottom: -15 }} />
-                            <Bar dataKey="ad" stackId="a" fill="#3f72af" />
-                            <Bar dataKey="premium" stackId="a" fill="#293462" />
-                        </BarChart>
-                        </ResponsiveContainer>
-                    </div>
+
                 </div>
             </div>
         );
