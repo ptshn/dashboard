@@ -12,7 +12,7 @@ import {
     Bar
 } from "recharts";
 
-class SpotifyDash extends React.Component {
+class VisualDashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -156,6 +156,7 @@ class SpotifyDash extends React.Component {
         this.pushData = this.pushData.bind(this);
         this.priorMonthCalcLoop = this.priorMonthCalcLoop.bind(this);
         this.percentToPriorMonthCalc = this.percentToPriorMonthCalc.bind(this);
+        this.monlthyShareCalcLoop = this.monlthyShareCalcLoop.bind(this);
     }
 
     componentDidMount() {
@@ -164,6 +165,7 @@ class SpotifyDash extends React.Component {
         });
 
         this.priorMonthCalcLoop(this.state.userArray);
+        this.monlthyShareCalcLoop(this.state.userArray);
     }
 
     pushData(metric) {
@@ -193,14 +195,17 @@ class SpotifyDash extends React.Component {
             metric = "users";
             this.pushData(metric);
             this.priorMonthCalcLoop(this.state.userArray);
+            this.monlthyShareCalcLoop(this.state.userArray);
         } else if (e.target.getAttribute("name") === "revenue") {
             metric = "revenue";
             this.pushData(metric);
             this.priorMonthCalcLoop(this.state.revenueArray);
+            this.monlthyShareCalcLoop(this.state.revenueArray);
         } else if (e.target.getAttribute("name") === "streams") {
             metric = "streams";
             this.pushData(metric);
             this.priorMonthCalcLoop(this.state.streamsArray);
+            this.monlthyShareCalcLoop(this.state.streamsArray);
         }
     }
 
@@ -260,6 +265,38 @@ class SpotifyDash extends React.Component {
         }
     }
 
+    monlthyShareCalcLoop(arr) {
+        const adShareArray = [];
+        const premShareArray = [];
+
+        const adShareObj = {};
+        const premShareObj = {};
+
+        for (let i = 0; i < arr.length; i++) {
+            let currentTotal = arr[i].total;
+            let adTotal = arr[i].ad;
+            let premTotal = arr[i].premium;
+
+            let monthlyAdShare = ((adTotal/currentTotal) * 100).toFixed(0) + '%';
+            let monlthyPremShare = ((premTotal/currentTotal) * 100).toFixed(0) + '%';
+
+            adShareObj[i] = monthlyAdShare;
+            premShareObj[i] = monlthyPremShare;
+        }
+        adShareArray.push(adShareObj);
+        premShareArray.push(premShareObj);
+
+        this.setState({
+            monthlyAdShareArray: adShareArray,
+            monthlyPremShareArray: premShareArray
+        });
+
+        console.log(adShareArray)
+        console.log(premShareArray);
+        
+    }
+
+
     render() {
         const logoStyle = {
             width: "50px",
@@ -267,7 +304,7 @@ class SpotifyDash extends React.Component {
         };
 
         const navFilterStyle = {
-            marginTop: "50px",
+            marginTop: "10px",
         };
 
         const chartTitleStyle = {
@@ -289,10 +326,12 @@ class SpotifyDash extends React.Component {
                         <p><strong>Spotify Dashboard</strong></p>
                     </div>
                     <div className="navbar-links" style={navFilterStyle}>
-                        <p>Select Metric Below:</p>
-                        <p name="users" onClick={this.handleClick}>Users</p>
-                        <p name="revenue" onClick={this.handleClick}>Revenue</p>
-                        <p name="streams" onClick={this.handleClick}>Streams</p>
+                        <p>Select a Metric Below:</p>
+                        <ul style={{ paddingLeft: 0 }}>
+                            <li name="users" onClick={this.handleClick}>Users</li>
+                            <li name="revenue" onClick={this.handleClick}>Revenue</li>
+                            <li name="streams" onClick={this.handleClick}>Stream</li>
+                        </ul>
                     </div>
                 </div>
 
@@ -333,9 +372,7 @@ class SpotifyDash extends React.Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
                                     {this.state.totalPriorMonthArray && this.state.totalPriorMonthArray.map((result, index) =>
-
                                         <tr key={index} className='tableHeader'>
                                             <th>Total</th>
                                             <td>-</td>
@@ -348,7 +385,6 @@ class SpotifyDash extends React.Component {
                                         </tr>
                                         )}
                                     {this.state.adPriorMonthArray && this.state.adPriorMonthArray.map((result, index) =>
-
                                         <tr key={index} className='tableHeader'>
                                             <th>Ad-Funded</th>
                                             <td>-</td>
@@ -362,7 +398,6 @@ class SpotifyDash extends React.Component {
                                     )}
 
                                     {this.state.premPriorMonthArray && this.state.premPriorMonthArray.map((result, index) =>
-
                                         <tr key={index} className='tableHeader'>
                                             <th>Premium</th>
                                             <td>-</td>
@@ -419,26 +454,30 @@ class SpotifyDash extends React.Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th className="tableHeader">Ad-Funded</th>
-                                        <td>64%</td>
-                                        <td>64%</td>
-                                        <td>62%</td>
-                                        <td>61%</td>
-                                        <td>62%</td>
-                                        <td>61%</td>
-                                        <td>63%</td>
-                                    </tr>
-                                    <tr>
-                                        <th className="tableHeader">Premium</th>
-                                        <td>36%</td>
-                                        <td>36%</td>
-                                        <td>38%</td>
-                                        <td>39%</td>
-                                        <td>38%</td>
-                                        <td>39%</td>
-                                        <td>37%</td>
-                                    </tr>
+                                {this.state.monthlyAdShareArray && this.state.monthlyAdShareArray.map((result, index) =>
+                                        <tr key={index} className='tableHeader'>
+                                            <th>Ad-Funded</th>
+                                            <td>{result[0]}</td>
+                                            <td>{result[1]}</td>
+                                            <td>{result[2]}</td>
+                                            <td>{result[3]}</td>
+                                            <td>{result[4]}</td>
+                                            <td>{result[5]}</td>
+                                            <td>{result[5]}</td>
+                                        </tr>
+                                        )}
+                                    {this.state.monthlyPremShareArray && this.state.monthlyPremShareArray.map((result, index) =>
+                                        <tr key={index} className='tableHeader'>
+                                            <th>Premium</th>
+                                            <td>{result[0]}</td>
+                                            <td>{result[1]}</td>
+                                            <td>{result[2]}</td>
+                                            <td>{result[3]}</td>
+                                            <td>{result[4]}</td>
+                                            <td>{result[5]}</td>
+                                            <td>{result[5]}</td>
+                                        </tr>
+                                        )}
                                 </tbody>
                             </table>
                         </div>
@@ -451,4 +490,4 @@ class SpotifyDash extends React.Component {
     }
 }
 
-export default SpotifyDash;
+export default VisualDashboard;

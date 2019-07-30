@@ -6,6 +6,19 @@
   position: relative;
 }
 
+ul li {
+  list-style: none;
+  margin-bottom: 10px;
+}
+
+li {
+  cursor: pointer;
+}
+
+li:active {
+  font-weight: bold;
+}
+
 table {
   table-layout: fixed;
   width: 100%;
@@ -56,5 +69,5 @@ td {
 
 .table-container {
   width: 100%;
-  margin-top: 10px;
+  margin-top: 15%;
 }

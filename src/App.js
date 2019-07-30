@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import SpotifyDash from './SpotifyDash';
+import VisualDashboard from './VisualDashboard';
 
 function App() {
   return (
     <div className="App">
-      <SpotifyDash />
+      <VisualDashboard />
     </div>
   );
 }
