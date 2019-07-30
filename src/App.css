@@ -2,8 +2,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  display: flex;
-  justify-content: center;
   font-size: 12px;
   position: relative;
 }
@@ -23,47 +21,39 @@ td {
   text-align: right;
 }
 
+.main-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
 .navbar-container {
-  position: absolute;
-  left: 35px;
-  top: 30px;
   border: 1px solid;
+  display: flex;
+  flex-direction: column;
 }
 
 .content-flex-container {
   display: flex;
-  position: absolute;
-  top: 30px;
-  left: 200px;
-  flex-direction: row;
   width: 80%;
+  margin-left: -5px;
+}
+
+.line-chart-flex {
+  margin-right: 10px;
 }
 
 .line-chart-flex,
 .bar-chart-flex {
   display: flex;
   flex-direction: column;
-}
-
-/* .line-chart-flex {
+  flex: 1;
   border: 1px solid;
-} */
-
-.line-chart-container {
-  /* position: absolute;
-  top: 30px;
-  left: 165px;
-  width: 40%;
-  margin-left: 30px; */
-  /* border: 1px solid; */
-  width: 100%;
+  align-items: center;
 }
+
 
 .left-table-container {
-  /* position: absolute;
-  left: 160px;
-  top: 375px; */
   width: 100%;
-  /* border: 1px solid; */
-  margin-top: 30%;
+  margin-top: 10px;
 }
