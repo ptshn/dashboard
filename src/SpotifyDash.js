@@ -154,6 +154,7 @@ class SpotifyDash extends React.Component {
 
         this.handleClick = this.handleClick.bind(this);
         this.pushData = this.pushData.bind(this);
+        this.priorMonthCalcLoop = this.priorMonthCalcLoop.bind(this);
         this.percentToPriorMonthCalc = this.percentToPriorMonthCalc.bind(this);
     }
 
@@ -162,7 +163,7 @@ class SpotifyDash extends React.Component {
             data: this.state.userArray
         });
 
-        this.percentToPriorMonthCalc(this.state.userArray);
+        this.priorMonthCalcLoop(this.state.userArray);
     }
 
     pushData(metric) {
@@ -191,32 +192,72 @@ class SpotifyDash extends React.Component {
         if (e.target.getAttribute("name") === "users") {
             metric = "users";
             this.pushData(metric);
-            this.percentToPriorMonthCalc(this.state.userArray);
+            this.priorMonthCalcLoop(this.state.userArray);
         } else if (e.target.getAttribute("name") === "revenue") {
             metric = "revenue";
             this.pushData(metric);
-            this.percentToPriorMonthCalc(this.state.revenueArray);
+            this.priorMonthCalcLoop(this.state.revenueArray);
         } else if (e.target.getAttribute("name") === "streams") {
             metric = "streams";
             this.pushData(metric);
-            this.percentToPriorMonthCalc(this.state.streamsArray);
+            this.priorMonthCalcLoop(this.state.streamsArray);
         }
     }
 
-    percentToPriorMonthCalc(arr) {
-        const calcArray = [];
+    priorMonthCalcLoop(arr) {
+        const totalPercentArray = [];
+        const adPercentArray = [];
+        const premPercentArray = [];
+
+        const totalPercentObj = {}
+        const adPercentObj = {}
+        const premPercentObj = {}
 
         for (let i = 1; i < arr.length; i++) {
             let currentTotal = arr[i].total;
             let prevTotal = arr[i - 1].total;
 
-            let calc = ((currentTotal / prevTotal - 1) * 100).toFixed(0) + "%";
-            calcArray.push(calc);
+            let currentAdTotal = arr[i].ad;
+            let prevAdTotal = arr[i-1].ad;
+
+            let currentPremTotal = arr[i].premium;
+            let prevPremTotal = arr[i-1].premium;
+
+            let totalResult = this.percentToPriorMonthCalc(prevTotal, currentTotal);
+            let adResult = this.percentToPriorMonthCalc(prevAdTotal, currentAdTotal);
+            let premResult = this.percentToPriorMonthCalc(prevPremTotal, currentPremTotal);
+
+            totalPercentObj[i] = totalResult;
+            adPercentObj[i] = adResult;
+            premPercentObj[i] = premResult;
         }
+        totalPercentArray.push(totalPercentObj);
+        adPercentArray.push(adPercentObj);
+        premPercentArray.push(premPercentObj);
+
+
         this.setState({
-            tableArray: calcArray
+            totalPriorMonthArray: totalPercentArray,
+            adPriorMonthArray: adPercentArray,
+            premPriorMonthArray : premPercentArray
         });
-        console.log(calcArray);
+        console.log(totalPercentArray);
+        console.log(adPercentArray);
+        console.log(premPercentArray);
+    }
+
+    percentToPriorMonthCalc(prevMonthTotal, currentMonthTotal) {
+        let finalPercentage = ((currentMonthTotal / prevMonthTotal - 1) * 100).toFixed(0);
+
+        if (finalPercentage > 0) {
+            finalPercentage = '+' + finalPercentage + '%'
+            console.log( finalPercentage);
+            return finalPercentage
+        } else {
+            finalPercentage = finalPercentage + '%';
+            console.log( finalPercentage);
+            return finalPercentage
+        }
     }
 
     render() {
@@ -292,36 +333,48 @@ class SpotifyDash extends React.Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th className="tableHeader">Total</th>
-                                        <td>-</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
-                                    </tr>
-                                    <tr>
-                                        <th className="tableHeader">Ad-Funded</th>
-                                        <td>-</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
-                                    </tr>
-                                    <tr>
-                                        <th className="tableHeader">Premium</th>
-                                        <td>-</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
-                                        <td>50%</td>
-                                    </tr>
+                                    
+                                    {this.state.totalPriorMonthArray && this.state.totalPriorMonthArray.map((result, index) =>
+
+                                        <tr key={index} className='tableHeader'>
+                                            <th>Total</th>
+                                            <td>-</td>
+                                            <td>{result[1]}</td>
+                                            <td>{result[2]}</td>
+                                            <td>{result[3]}</td>
+                                            <td>{result[4]}</td>
+                                            <td>{result[5]}</td>
+                                            <td>{result[6]}</td>
+                                        </tr>
+                                        )}
+                                    {this.state.adPriorMonthArray && this.state.adPriorMonthArray.map((result, index) =>
+
+                                        <tr key={index} className='tableHeader'>
+                                            <th>Ad-Funded</th>
+                                            <td>-</td>
+                                            <td>{result[1]}</td>
+                                            <td>{result[2]}</td>
+                                            <td>{result[3]}</td>
+                                            <td>{result[4]}</td>
+                                            <td>{result[5]}</td>
+                                            <td>{result[6]}</td>
+                                        </tr>
+                                    )}
+
+                                    {this.state.premPriorMonthArray && this.state.premPriorMonthArray.map((result, index) =>
+
+                                        <tr key={index} className='tableHeader'>
+                                            <th>Premium</th>
+                                            <td>-</td>
+                                            <td>{result[1]}</td>
+                                            <td>{result[2]}</td>
+                                            <td>{result[3]}</td>
+                                            <td>{result[4]}</td>
+                                            <td>{result[5]}</td>
+                                            <td>{result[6]}</td>
+                                        </tr>
+                                    )}
+                                    
                                 </tbody>
                             </table>
                         </div>
