@@ -13,9 +13,14 @@ table {
   width: 100%;
 }
 
-th, td {
+th,
+td {
   text-align: center;
   padding: 5px;
+}
+
+.tableHeader {
+  text-align: right;
 }
 
 .navbar-container {
@@ -25,27 +30,40 @@ th, td {
   border: 1px solid;
 }
 
-.line-chart-container {
+.content-flex-container {
+  display: flex;
   position: absolute;
+  top: 30px;
+  left: 200px;
+  flex-direction: row;
+  width: 80%;
+}
+
+.line-chart-flex,
+.bar-chart-flex {
+  display: flex;
+  flex-direction: column;
+}
+
+/* .line-chart-flex {
+  border: 1px solid;
+} */
+
+.line-chart-container {
+  /* position: absolute;
   top: 30px;
   left: 165px;
   width: 40%;
-  margin-left: 30px;
-  border: 1px solid;
+  margin-left: 30px; */
+  /* border: 1px solid; */
+  width: 100%;
 }
 
 .left-table-container {
-  position: absolute;
+  /* position: absolute;
   left: 160px;
-  top: 375px;
-  width: 40%;
-  border: 1px solid;
-}
-
-.tableHeader {
-  text-align: right;
-}
-
-.bar-chart-container {
-  width: 40%;
+  top: 375px; */
+  width: 100%;
+  /* border: 1px solid; */
+  margin-top: 30%;
 }
